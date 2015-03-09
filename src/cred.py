@@ -1,0 +1,3 @@
+
+skypename=''
+password=''
