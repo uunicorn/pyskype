@@ -206,11 +206,6 @@ connection.connect('s.gateway.messenger.live.com', 443)
 # to send a message:
 # connection.msgr(routing("8:" + skypename) + reliability() + messaging_rich("Oh, hi!"))
 
-# TODO: handle:
-# XFR 3 CON 204
-#
-#<xfr><target>BAYMSGR2011012.gateway.messenger.live.com:443</target><flags>S</flags><state>VmVyc2lvbjogMQ0KWGZyQ291bnQ6IDENClhmclNlbnRVVENUaW1lOiA2MzU2MTE4OTE5MzM0MDMwODANCg==</state><wait>0</wait></xfr>
-
 # TODO: handle OUT/reconnect
 
 # TODO: send ACKs:
