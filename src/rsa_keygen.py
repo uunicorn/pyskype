@@ -47,7 +47,11 @@ def random_prime(low, high):
     return r 
 
 def nbit_prime(bits):
-    return random_prime(1 << (bits - 1), (1 << bits) - 1)
+    # make sure random prime is big enough so that p*q will have it's msb set
+    high = (1 << bits) - 1
+    low = 1 << (bits - 1)
+    low += (high-low)/2
+    return random_prime(low, high)
 
 def get_d(e, m):
     tm = m

@@ -38,7 +38,10 @@ class transport_stream():
         self.sock = s
         sk = self.handshake()
         self.rc4_out = rc4(sk)
-        self.rc4_in = rc4(chr(ord(sk[0])+1) + sk[1:]) # XXX: increment one byte only, or treat as a number?
+        first_byte = ord(sk[0])+1
+        if first_byte == 0x100:
+            print "first_byte overflow, I wonder if negotiation failed"
+        self.rc4_in = rc4(chr(first_byte & 0xff) + sk[1:]) # XXX: increment one byte only, or treat as a number?
 
     def param(self):
         return int(hexlify(os.urandom(48)), 16)

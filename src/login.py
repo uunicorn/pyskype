@@ -16,7 +16,7 @@ def connect(host, port):
 
 def login_req():
     e, n, d = rsa_keygen.make_rsa_keypair()
-    print (e, n, d)
+    print "Your private key: " + repr((e, n, d))
     s=rsa_aes(transport_stream(connect(login_host, login_port)))
     pub_key=unhexlify("%0256x" % n)
     login=[
@@ -32,5 +32,33 @@ def login_req():
     dump_profile(cert)
     return (e, n, d, cert)
 
-#print login_req()
+e, n, d, cert = login_req()
+
+def encrypt(m):
+    global e, n
+    return pow(m, e, n)
+
+def decrypt(c):
+    global d, n
+    return pow(c, d, n)
+
+def n2m(n):
+    return unhexlify("%0256x" % n)
+
+def m2n(m):
+    return int(hexlify(m), 16)
+
+def rsa_pad(size, msg):
+    msg = msg + sha1(msg).digest()
+    pad = size - 3 -len(msg) # pad the packet with 0xbb up to size bytes
+    pkt = chr(0x4b) + (chr(0xbb) * pad) + chr(0xba) + msg + chr(0xbc)
+    return pkt
+
+def uic_pkt(nonce, salt):
+    msg = sha1(cert + salt).digest() + salt + nonce
+    return rsa_pad(0x80, msg)
+
+def uic(nonce, salt):
+    uic=unhexlify('00000104') + cert + n2m(decrypt(m2n(uic_pkt(nonce, salt))))
+    return b2a_base64(uic)
 
