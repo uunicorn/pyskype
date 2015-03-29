@@ -8,5 +8,5 @@ $ python
 
 Once connected you can send messages to users/circles with
 ```
->>> msgr(routing("8:" + skypename) + reliability() + messaging_rich("Oh, hi!"))
+>>> connection.msgr(routing("8:" + skypename) + reliability() + messaging_rich("Oh, hi!"))
 ```
